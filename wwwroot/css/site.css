@@ -1,0 +1,96 @@
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin-bottom: 60px;
+}
+
+.button {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    border-radius: 10px;
+    background-color: white;
+    opacity: 50%;
+    z-index: 3;
+}
+
+.btn-close {
+    z-index: 6;
+}
+
+.custom {
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    margin-bottom: 50px;
+    background-color: #f0f0f0;
+}
+
+.custom-row {
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+    .custom-row ul {
+        margin-top: auto;
+    }
+
+.card, .custom-card {
+    background-color: #f0f0f0;
+    border-radius: 20px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), 0 7px 7px rgba(0, 0, 0, 0.4);
+    padding: 15px;
+}
+
+.custom-card {
+    width: 60%;
+}
+
+.custom-gray-bg {
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-create {
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 7px 7px rgb(128, 128, 128, 0.2);
+}
+
+    .btn-create:hover {
+        background-color: #ded8d8;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 7px 7px rgb(128, 128, 128, 0.2);
+    }
+
+.card-body {
+    color: black;
+}
+
+#map {
+    height: 800px;
+}
+
+#umap {
+    height: 250px;
+}

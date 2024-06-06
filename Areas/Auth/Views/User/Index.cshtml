@@ -1,0 +1,72 @@
+﻿@model List<Account>
+
+@{
+	Layout = "_Layout";
+}
+<div class="row">
+	<div class="mt-5 mb-3 text-center">
+		<h2>Аккаунти користувачів!</h2>
+	</div>
+	<div class="mb-3">
+		<div class="row">
+			<button class="btn create open-in-modal btn-outline-primary"
+					data-bs-toggle="modal"
+					data-bs-target=".modal"
+					asp-action="Create"
+					asp-controller="User"
+					asp-area="Auth">
+				Створити користувача
+			</button>
+		</div>
+	</div>
+	<div class="row">
+		<table class="table table-bordered table-striped table-condensed">
+			<thead>
+				<tr>
+					<th>Foto</th>
+					<th>Ім'я</th>
+					<th>Пошта</th>
+					<th>Дія</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+					<tr>
+						<td>
+							@if (@item.Image != null)
+							{
+								<img src="@item.Image!.GetImage()" style="width: 70px; height:70px; border-radius:50%; border: 1px solid gray" alt="" />
+							}
+						</td>
+						<td>@item.UserName</td>
+						<td>@item.Email</td>
+						<td>
+							@if (item.UserName != User.Identity!.Name)
+							{
+								<button data-bs-toggle="modal"
+										data-bs-target=".modal"
+										asp-action="Edit"
+										asp-controller="User"
+										asp-area="Auth"
+										asp-route-id="@item.Id"
+										class="btn edit btn-info open-in-modal">
+									Редагування
+								</button>
+								<button data-bs-toggle="modal"
+										data-bs-target=".modal"
+										asp-action="Edit"
+										asp-controller="User"
+										asp-area="Auth"
+										asp-route-id="@item.Id"
+										class="btn btn-danger open-in-modal">
+									Видалення
+								</button>
+							}
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>

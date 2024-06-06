@@ -1,0 +1,56 @@
+﻿@model UserEditForm
+@{
+	Layout = "_ModalLayout";
+	ViewData["ModalTitle"] = "Редагування користувача";
+	var id = (int)ViewBag.Id;
+}
+<form class="ajax-form"
+	  asp-action="edit"
+	  asp-area="Auth"
+	  asp-controller="User"
+	  enctype="multipart/form-data">
+	@Html.AntiForgeryToken()
+	<div class="modal-body form-horizontal">
+		<div class="row">
+			<div class="col-md-4">
+				@if (@Model.SrcImage != null)
+				{
+					<div class="button">
+						<button asp-controller="User"
+								asp-area="Auth"
+								asp-action="DeleteImage"
+								data-message="Видалити картинку?"
+								data-body="@JsonSerializer.Serialize(new ImageDeleteModel{Id = id, Src = Model.SrcImage})"
+								class="btn btn-close post-button" aria-label="Close"></button>
+					</div>
+					<img src="@Model.SrcImage" class="img-fluid rounded-start" alt="...">
+				}
+			</div>
+			<div class="mb-3">
+				@Html.LabelFor(m => m.Image, new { @class = "form-label" })
+				@Html.TextBoxFor(m => m.Image, new { @class = "form-control", type = "file", accept = ".jpg,.png,.jpeg" })
+				@Html.ValidationMessageFor(m => m.Image, null, new { @class = "text-danger" })
+			</div>
+			<div class="form-group">
+				<label asp-for="Name" class="col-lg-3 col-sm-3 control-label"></label>
+				<input asp-for="Name" class="form-control" />
+				<!span asp-validation-for="Name" class="text-danger"></!span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Email" class="col-lg-3 col-sm-3 control-label"></label>
+				<input asp-for="Email" class="form-control" />
+				<!span asp-validation-for="Email" class="text-danger"></!span>
+			</div>
+			@for (var i = 0; i < Model.UserRoles.Count; i++)
+			{
+				@Html.HiddenFor(m => m.UserRoles[i].Name)
+				<div class="form-check form-switch ps-5">
+					@Html.CheckBoxFor(m => m.UserRoles[i].IsActived, new { @class = "form-check-label", role = "switch" })
+					@Html.LabelFor(m => m.UserRoles[i].IsActived, Model.UserRoles[i].Name, new { @class = "form-check-label" })
+				</div>
+			}
+			<div id="umap"></div>
+		</div>
+	</div>
+	@await Html.PartialAsync("_ModalFooter", new ModalFooter { })
+</form> 

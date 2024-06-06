@@ -1,0 +1,41 @@
+﻿@model List<Position>
+
+@{
+	var position = 1;
+}
+
+<div class="container">
+	<a class="btn btn-create mb-5" asp-action="create" asp-controller="position">Створити позицію</a>
+	<div class="row">
+		<table class="table table-dark table-striped">
+			<thead>
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Назва позиції</th>
+					<th scope="col">Редагування</th>
+					<th scope="col">Видалення</th>
+				</tr>
+			</thead>
+			<tbody>
+				@for (var i = 0; i < Model.Count; i++)
+				{
+					<tr>
+						<th scope="row">@(position++)</th>
+						<td>@Model[i].Title</td>
+						<td><a class="btn btn-info" asp-action="edit" asp-controller="position" asp-route-id=@Model[i].Id>Редагування</a></td>
+						<td>
+								@Html.AntiForgeryToken()
+								<button asp-controller="Position"
+										asp-action="Delete"
+										data-message="Видалити позицію @Model[i].Title?"
+										data-body="@JsonSerializer.Serialize( new PositionDeleteModel {id = Model[i].Id})"
+										class=" btn btn-danger post-button">
+									Видалення
+								</button>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>

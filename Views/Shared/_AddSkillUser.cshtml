@@ -1,0 +1,21 @@
+﻿@model Skill
+
+@{
+	var list = ViewData["Skills"] as List<Skill>;
+	var skillList = new SelectList(list, "Id", "Name");
+}
+<div class="col-sm-6">
+	<div class="card bg-black bg-opacity-25">
+		<div class="card-body">
+			<form method="post" enctype="multipart/form-data">
+				@Html.AntiForgeryToken()
+				<div class="mb-3">
+					@Html.LabelFor(s => s.Name, new { @class = "form-label" })
+					@Html.DropDownListFor(s => s.Id, skillList, "", new { @class = "form-select" })
+					@Html.ValidationMessageFor(s => s.Id, null, new { @class = "text-danger" })
+				</div>
+				<button class="btn btn-primary" type="submit">Save</button>
+			</form>
+		</div>
+	</div>
+</div>

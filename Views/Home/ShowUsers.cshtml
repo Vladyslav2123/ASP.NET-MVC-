@@ -1,0 +1,86 @@
+﻿@model List<UserInfo>
+
+@{
+	var positions = ViewData["Positions"] as List<Position>;
+	ViewData["Title"] = "UserInfo Info";
+
+}
+
+<div class="container">
+	<div class="row">
+		<div class="col-12 text-center">
+			<a class="btn btn-create mb-5" asp-action="create" asp-controller="home">Create new user</a>
+		</div>
+		<div>
+			<form asp-action="Search" asp-controller="home" method="post">
+				<div class="form-group mb-3">
+					@Html.TextBox("searchString",null, new { @class = "form-control", @placeholder = "Search..." })
+					@Html.ValidationMessage("searchString", new { @class = "text-danger" })
+				</div>
+				<div class="mb-3">
+					<button type="submit" class="btn btn-outline-info">Пошук</button>
+					<a class="btn btn-outline-info" 
+					asp-controller="Home"
+					asp-area=""
+					asp-action="ShowUsers"
+					>Очистити</a>
+				</div>
+			</form>
+		</div>
+		@foreach (var user in Model)
+		{
+			<div class="col-sm-6 mt-5">
+				<div class="card bg-black bg-opacity-25">
+					@if (user.Images != null && user.Images.Count > 0)
+					{
+						@await Html.PartialAsync("_ImageCarousel", user.Images.Select(i => i.GetImage()).ToList())
+					}
+					<div class="card-body">
+						<div class="mb-2">
+							<p class="h4 text-center">Імя</p>
+							<p class="text-center">@user.FirstName</p>
+						</div>
+						<div class="mb-2">
+							<p class="h4 text-center">Прізвище</p>
+							<p class="text-center">@user.LastName</p>
+						</div>
+						<div class="mb-2">
+							<p class="h4 text-center">Позиція:</p>
+							<p class="text-center">@user.Position.Title</p>
+						</div>
+						<div class="card-footer">
+							<div class="row">
+								<div class="mb-3 text-center">
+									@if (user.IsActive)
+									{
+										<p class="badge bg-black bg-opacity-50">Активний</p>
+									}
+									else
+									{
+										<p class="badge bg-black bg-opacity-50">Не активний</p>
+									}
+								</div>
+							</div>
+							<div class="row">
+								@Html.AntiForgeryToken()
+								<a class="btn mb-2 btn-info"
+								   asp-area="" asp-controller="Home" asp-action="Show"
+								   asp-route-id="@user.Id">Інформація</a>
+								<a class="btn mb-2 btn-success"
+								   asp-area="" asp-controller="Home" asp-action="Edit"
+								   asp-route-id="@user.Id">Редагування</a>
+								<button asp-controller="Home"
+										asp-action="Delete"
+										data-message="Видалити користувача @user.LastName @user.FirstName?"
+										data-body="@JsonSerializer.Serialize(new UserDeleteModel {id = user.Id})"
+										class=" btn btn-danger post-button">
+									Видалення
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		}
+	</div>
+</div>

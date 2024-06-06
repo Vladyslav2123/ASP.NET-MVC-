@@ -1,0 +1,139 @@
+﻿@{
+	var messages = new List<Toast>
+	();
+	if (TempData["Toasts"] != null)
+	{
+	messages = JsonSerializer.Deserialize<List<Toast>>(TempData["Toasts"].ToString());
+	}
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"] - HW_11</title>
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/HW_11.styles.css" asp-append-version="true" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+	<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+	<header>
+		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+			<div class="container-fluid">
+				<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">HW_11</a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+						aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+					<ul class="navbar-nav flex-grow-1">
+						<li class="nav-item">
+							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="ShowUsers">Users</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-dark" asp-area="" asp-controller="Position" asp-action="Index">Positions</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-dark" asp-area="" asp-controller="Skill" asp-action="Index">Skills</a>
+						</li>
+					</ul>
+				</div>
+				@if (User!.Identity!.IsAuthenticated)
+				{
+					<ul class="nav">
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle"
+							   data-bs-toggle="dropdown"
+							   href="#" role="button"
+							   aria-expanded="false">@User.Identity.Name</a>
+							<ul class="dropdown-menu">
+								<li>
+									<button class="dropdown-item open-in-modal"
+											data-bs-toggle="modal"
+											data-bs-target=".modal"
+											asp-area="Auth"
+											asp-controller="User"
+											asp-action="ModalProfile"
+											asp-route-id="@int.Parse(User.Claims.First(x=>x.Type==ClaimTypes.NameIdentifier).Value)">
+										Профіль
+									</button>
+								</li>
+								<li>
+									<a class="dropdown-item"
+									   asp-area="Auth"
+									   asp-controller="User"
+									   asp-action="Index">
+										Користувачі
+									</a>
+								</li>
+								<li>
+									<a class="dropdown-item"
+									   asp-area="Auth"
+									   asp-controller="Home"
+									   asp-action="Logout">Вихід</a>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				}
+				else
+				{
+					<ul class="nav">
+						<li class="nav-item">
+							<button class="btn open-in-modal"
+									data-bs-toggle="modal"
+									data-bs-target=".modal"
+									asp-area="Auth"
+									asp-controller="Home"
+									asp-action="Login">
+								Вхід
+							</button>
+						</li>
+						<li class="nav-item">
+							<button class="btn open-in-modal"
+									data-bs-toggle="modal"
+									data-bs-target=".modal"
+									asp-area="Auth"
+									asp-controller="Home"
+									asp-action="Register">
+								Реєстрація
+							</button>
+						</li>
+					</ul>
+				}
+			</div>
+		</nav>
+	</header>
+	<div class="container">
+		<main role="main" class="pb-3">
+			@RenderBody()
+			<div class="modal fade" id="my-modal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+					</div>
+				</div>
+			</div>
+		</main>
+	</div>
+
+	<footer class="border-top footer text-muted">
+		<div class="container">
+			&copy; 2024  <a asp-area="" asp-controller="Home" asp-action="Index">Index</a>
+		</div>
+	</footer>
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+	<script src="~/js/modal.js" asp-append-version="true"></script>
+	<script src="~/js/leaflet.js" asp-append-version="true"></script>
+	<script src="~/js/Toast.js" asp-append-version="true"></script>
+	@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

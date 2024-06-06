@@ -1,0 +1,77 @@
+﻿@model UserForm
+@{
+	Layout = "_Layout";
+
+	ViewData["Title"] = Model.FirstName + " " + Model.LastName;
+	var position = ViewData["position"] as Position;
+
+	var skills = ViewData["Skills"] as List<UserSkill>;
+}
+
+<div class="container-fluid custom-gray-bg">
+	<div class="row justify-content-center">
+		<div class="col-sm-6">
+			<div class="card bg-black bg-opacity-25">
+				<div class="card-body">
+					<div class="card-header bg-body bg-opacity-25 text-decoration-underline text-white-50">
+						<p class="h4 text-center">@Model.FirstName @Model.LastName</p>
+					</div>
+					@if (Model.SrcImage != null && Model.SrcImage.Count > 0)
+					{
+						@await Html.PartialAsync("_ImageCarousel", Model.SrcImage)
+					}
+					<div>
+						<p class="h5 text-center">Позиція:</p>
+						<p class="text-center">@position!.Title</p>
+					</div>
+					<div>
+						<p class="h5 text-center">Опис:</p>
+						<p class="text-center">@Model.Description</p>
+					</div>
+					<div class="mb-2">
+						<p class="h5 text-center">Дата народження:</p>
+						<p class="text-center">@Model.Birthday.ToString()</p>
+					</div>
+				</div>
+				<div class="card-footer">
+					<div class="mb-3 text-center">
+						@if (Model.IsActive)
+						{
+							<p class="badge bg-black bg-opacity-50">Активний</p>
+						}
+						else
+						{
+							<p class="badge bg-black bg-opacity-50">Не активний</p>
+						}
+					</div>
+					<div class="row mb-2">
+						<a class="btn btn-info"
+						   asp-area="" asp-controller="Home" asp-action="ShowUsers">
+							Назад
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="card bg-black bg-opacity-25">
+				<div class="card-body">
+					@if (skills != null)
+					{
+						@foreach (var item in skills!)
+						{
+							<div>@item.Skill.Name</div>
+							<div class="row align-items-center">
+								<div class="col-md">
+									<div class="progress">
+										<div class="progress-bar" role="progressbar" style="width: @item.ProficiencyLevel%;" aria-valuenow="@item.ProficiencyLevel" aria-valuemin="0" aria-valuemax="100">@item.ProficiencyLevel%</div>
+									</div>
+								</div>
+							</div>
+						}
+					}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

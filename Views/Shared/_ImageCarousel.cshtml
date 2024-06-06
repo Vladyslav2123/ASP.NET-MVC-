@@ -1,0 +1,32 @@
+﻿@model List<string>
+@{
+	var idNullable = ViewData["UserId"] as int?;
+	int id = idNullable ?? 0;
+	var idCarusel = "carusel-" + Guid.NewGuid().ToString().Substring(0, 5);
+}
+
+<div id="@idCarusel" class="card-img-top carousel slide" data-bs-ride="carousel">
+	<div class="carousel-inner">
+		@for (int i = 0; i < Model.Count; i++)
+		{
+			<div class="carousel-item @(i == 0 ?"active" : "")">
+				<div class="button">
+					<button asp-controller="Home"
+							asp-action="DeleteImage"
+							data-message="Видалити картинку?"
+							data-body="@JsonSerializer.Serialize(new ImageDeleteModel{Id = id, Src = Model[i]})"
+							class="btn btn-close post-button" aria-label="Close"></button>
+				</div>
+				<img src="@Model[i]" class="card-img-top" />
+			</div>
+		}
+	</div>
+	<button class="carousel-control-prev" type="button" data-bs-target="#@idCarusel" data-bs-slide="prev">
+		<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+		<span class="visually-hidden">Previous</span>
+	</button>
+	<button class="carousel-control-next" type="button" data-bs-target="#@idCarusel" data-bs-slide="next">
+		<span class="carousel-control-next-icon" aria-hidden="true"></span>
+		<span class="visually-hidden">Next</span>
+	</button>
+</div>

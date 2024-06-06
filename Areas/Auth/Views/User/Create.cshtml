@@ -1,0 +1,62 @@
+﻿@model UserCreateForm
+@{
+	Layout = "_ModalLayout";
+	ViewData["ModalTitle"] = "Створити користувача";
+}
+
+<form class="ajax-form"
+	  asp-action="Create"
+	  asp-area="Auth"
+	  asp-controller="User"
+	  enctype="multipart/form-data">
+	@Html.AntiForgeryToken()
+	<div class="modal-body form-horizontal">
+		<div class="row">
+			<div class="form-group">
+				<label asp-for="Name" class="col-lg-3 col-sm-3 control-label"></label>
+				<input asp-for="Name" class="form-control" />
+				@Html.ValidationMessageFor(m => m.Name, null, new { @class = "text-danger" })
+			</div>
+			<div class="form-group">
+				<label asp-for="Email" class="col-lg-3 col-sm-3 control-label"></label>
+				<input asp-for="Email" class="form-control" />
+				@Html.ValidationMessageFor(m => m.Email, null, new { @class = "text-danger" })
+			</div>
+			<div class="form-group">
+				<label asp-for="Password" class="col-lg-3 col-sm-3 control-label"></label>
+				<input asp-for="Password" class="form-control" />
+				@Html.ValidationMessageFor(m => m.Password, null, new { @class = "text-danger" })
+			</div>
+			<div class="form-group">
+				<label asp-for="ConfirmPassword" class="col-lg-3 col-sm-3 control-label"></label>
+				<input asp-for="ConfirmPassword" class="form-control" />
+				@Html.ValidationMessageFor(m => m.ConfirmPassword, null, new { @class = "text-danger" })
+			</div>
+			<div class="mb-3">
+				@Html.LabelFor(m => m.Image, new { @class = "form-label" })
+				@Html.TextBoxFor(m => m.Image, new { @class = "form-control", type = "file", accept = ".jpg,.png,.jpeg" })
+				@Html.ValidationMessageFor(m => m.Image, null, new { @class = "text-danger" })
+			</div>
+			@for (var i = 0; i < Model.UserRoles.Count; i++)
+			{
+				@Html.HiddenFor(m => m.UserRoles[i].Name)
+				<div class="form-check form-switch ps-5">
+					@Html.CheckBoxFor(m => m.UserRoles[i].IsActived, new { @class = "form-check-label", role = "switch" })
+					@Html.LabelFor(m => m.UserRoles[i].IsActived, Model.UserRoles[i].Name, new { @class = "form-check-label" })
+				</div>
+			}
+			<div class="mb-3">
+				@Html.LabelFor(m => m.MapMarker.Lat, new { @class = "form-label" })
+				@Html.TextBoxFor(m => m.MapMarker.Lat, new { @class = "form-control lat" })
+				@Html.ValidationMessageFor(m => m.MapMarker.Lat, null, new { @class = "text-danger" })
+			</div>
+			<div class="mb-3">
+				@Html.LabelFor(m => m.MapMarker.Lng, new { @class = "form-label" })
+				@Html.TextBoxFor(m => m.MapMarker.Lng, new { @class = "form-control lng" })
+				@Html.ValidationMessageFor(m => m.MapMarker.Lng, null, new { @class = "text-danger" })
+			</div>
+			<div id="umap"></div>
+		</div>
+	</div>
+	@await Html.PartialAsync("_ModalFooter", new ModalFooter { })
+</form>

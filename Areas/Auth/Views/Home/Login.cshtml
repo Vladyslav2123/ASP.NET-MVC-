@@ -1,0 +1,31 @@
+﻿@model LoginForm
+@{
+	Layout = "_ModalLayout";
+	ViewData["ModalTitle"] = "Login user";
+}
+
+<form method="post"
+	  class="ajax-form"
+	  asp-action="Login"
+	  asp-area="Auth"
+	  asp-controller="Home"
+	  enctype="multipart/form-data">
+	@Html.AntiForgeryToken()
+	<div class="mb-3">
+		@Html.LabelFor(m => m.Login, new { @class = "form-label" })
+		@Html.TextBoxFor(m => m.Login, new { @class = "form-control" })
+		@Html.ValidationMessageFor(m => m.Login, null, new { @class = "text-danger" })
+	</div>
+	<div class="mb-3">
+		@Html.LabelFor(m => m.Password, new { @class = "form-label" })
+		@Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+		@Html.ValidationMessageFor(m => m.Password, null, new { @class = "text-danger" })
+	</div>
+	<button class="btn btn-primary" type="submit">Увійти</button>
+	<a class="btn open-in-modal"
+			asp-area="Auth"
+			asp-controller="Home"
+			asp-action="Register">
+		Реєстрація
+	</a>
+</form>

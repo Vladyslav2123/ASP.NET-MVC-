@@ -1,0 +1,51 @@
+﻿@model List<Skill>
+
+@{
+}
+
+<div class="container">
+	<div class="row">
+		<div class="row">
+			@if (User!.Identity!.IsAuthenticated)
+			{
+				<a class="btn btn-create mb-5"
+				   asp-action="create"
+				   asp-controller="skill">Create new skill</a>
+			}
+		</div>
+		@foreach (var skill in Model)
+		{
+			<div class="col-sm-6 mt-5">
+				<div class="card bg-black bg-opacity-25">
+					@if (skill.Images.Count() > 0)
+					{
+						<img src="@skill.Images.First().GetImage()" class="card-img-top" />
+					}
+					<div class="card-body">
+						<div class="mb-2">
+							<p class="h2 text-center">@skill.Name</p>
+						</div>
+						<div class="card-footer">
+							<div class="row">
+								@if (User.Identity.IsAuthenticated)
+								{
+									@Html.AntiForgeryToken()
+									<a class="btn mb-2 btn-success"
+									   asp-area="" asp-controller="Skill" asp-action="Edit"
+									   asp-route-id="@skill.Id">Редагування</a>
+									<button asp-controller="Skill"
+											asp-action="Delete"
+											data-message="Видалити навичку @skill.Name?"
+											data-body="@JsonSerializer.Serialize(new SkillDeleteModel {id = skill.Id})"
+											class=" btn btn-danger post-button">
+										Видалення
+									</button>
+								}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		}
+	</div>
+</div>
